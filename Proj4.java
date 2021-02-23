@@ -10,6 +10,9 @@ public class Proj4 {
 		// prompt for how many students user wants to input
 		final int TOTAL_EXAMS = 4;
 		final int MAX_COUNT = 999;
+		
+		final double GRADE_A = 90;
+		
 		String score;
 		String WID = "";
 		// create array for storing names and students scores
@@ -70,11 +73,11 @@ public class Proj4 {
 		  }
 		}
 	  ///	Format names from studentNames list
-		StringBuilder sb = new StringBuilder();
+		String first, last;
 		
 		for (i=0; i < totalStudents; i++) {
-			String first, last;
 			String studentName = studentNames[i];
+			StringBuilder sb = new StringBuilder();
 			StringTokenizer st = new StringTokenizer(studentName, " ");
 			
 			while(st.hasMoreTokens()) {
@@ -88,10 +91,15 @@ public class Proj4 {
 			}
 		}
 		
-		/// print out result
-		for (i = 0; i < totalStudents; i++) {
-			System.out.println(studentNames[i]);
-		}
+/// print out result
+for (i = 0; i < totalStudents; i++) {
+	System.out.println(studentNames[i]);
+}
+		
+		// display name, wid, average exam score as percentage(%45) and final grade
+		
+		
+		
 		
 	}
 }
