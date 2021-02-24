@@ -11,11 +11,18 @@ public class Proj4 {
 		final int TOTAL_EXAMS = 4;
 		final int MAX_COUNT = 999;
 		
+		// Curve for class
 		final double GRADE_A = 90;
+		final double GRADE_B = 80;
+		final double GRADE_C = 70;
+		final double GRADE_D = 60;
 		
+		
+		
+		// create array for storing names and students scores
 		String score;
 		String WID = "";
-		// create array for storing names and students scores
+		
 		String [] studentNames = new String [MAX_COUNT];
 		int [][] examScores= new int [MAX_COUNT][TOTAL_EXAMS]; 
 		int [] WIDs = new int [MAX_COUNT];
@@ -91,12 +98,37 @@ public class Proj4 {
 			}
 		}
 		
-/// print out result
-for (i = 0; i < totalStudents; i++) {
-	System.out.println(studentNames[i]);
-}
+		/// // display name, wid, average exam score as percentage(%45) and final grade
+		double examSum = 0.0;
+		double examPercentage;
 		
-		// display name, wid, average exam score as percentage(%45) and final grade
+		System.out.println("***Class Results***");
+		for (i = 0; i < totalStudents; i++) {
+			System.out.println(studentNames[i]);
+			System.out.println(WIDs[i]);
+			for (j = 0; j < examScores[i].length; j++) {
+				examSum += examScores[i][j];
+			}
+			examPercentage = examSum / TOTAL_EXAMS;
+			System.out.println("Exam percentage: " + examPercentage); // print average score
+			if (examPercentage >= GRADE_A) {
+				System.out.println("Final grade: A");
+			} else if (examPercentage >= GRADE_B) {
+				System.out.println("Final grade: B");
+			} else if (examPercentage >= GRADE_C) {
+				System.out.println("Final grade: C");
+			} else if (examPercentage >= GRADE_D) {
+				System.out.println("Final grade: D");
+			} else {
+				System.out.println("Final grade: F");
+			}
+			
+			// read for a 'enter' press from user
+			System.out.print("Press enter to display next student...");
+			userChoice = scnr.nextLine();			
+		}
+		
+		
 		
 		
 		
