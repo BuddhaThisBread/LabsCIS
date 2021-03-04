@@ -2,7 +2,9 @@ import java.io.*;
 import java.util.*;
 
 public class Lab5 {
-  public static void main(String[] args) throws IOException {
+  private static final Object[] monthNames = null;
+
+public static void main(String[] args) throws IOException {
 	// open scanner 
     Scanner scnr = new Scanner(new File("Lab5_Dates.txt"));
     
@@ -18,7 +20,7 @@ public class Lab5 {
     
     int totalDates = 0; // hold number of dates from file
     int j = 0; // j iterates after each line from file
-    
+    int i = 0;
     while (scnr.hasNext()) { // assign line data into array
 	    	String line = scnr.nextLine(); // get line
 	    	StringTokenizer st = new StringTokenizer(line, "/");
@@ -30,7 +32,7 @@ public class Lab5 {
 	    		date = st.nextToken();
 	    		year = st.nextToken();
 	    	}
-	    		for (int i = 0; i < DATE_FORMAT; i++) {
+	    		for (i = 0; i < DATE_FORMAT; i++) {
 	    			if (i == 0) {
 	    				monthDateYear[i][j] = month; 
 	    			} else if (i == 1) {
@@ -40,11 +42,14 @@ public class Lab5 {
 	    			}
 	    		}
 	    		j++; // move to next date
+	    		totalDates++; // find total number of dates from file
     	} // end of line 
     	scnr.close();
-    	
-    	
-    
+    	for (j = 0; j < totalDates; j++) {
+	    	do {
+	    		System.out.printf("%s", monthNames[Integer.parseInt(monthDateYear[i][j])]);
+	    	} while(i < DATE_FORMAT);
+    	}
     
   	}
 }
