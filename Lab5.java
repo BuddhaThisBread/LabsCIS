@@ -2,7 +2,6 @@ import java.io.*;
 import java.util.*;
 
 public class Lab5 {
-  private static final Object[] monthNames = null;
 
 public static void main(String[] args) throws IOException {
 	// open scanner 
@@ -19,6 +18,9 @@ public static void main(String[] args) throws IOException {
     String monthDateYear [] [] = new String [DATE_FORMAT][MAX_DATES]; // array to hold dates from file
     
     int totalDates = 0; // hold number of dates from file
+    int currentDate = 0;
+    int currentMonth = 0;
+    int currentYear = 0;
     int j = 0; // j iterates after each line from file
     int i = 0;
     while (scnr.hasNext()) { // assign line data into array
@@ -45,25 +47,41 @@ public static void main(String[] args) throws IOException {
 	    		totalDates++; // find total number of dates from file
     	} // end of line 
     	scnr.close();
+    	
     	for (j = 0; j < totalDates; j++) {
-	    	do {
-	    		System.out.printf("%s", monthNames[Integer.parseInt(monthDateYear[i][j])]);
-	    	} while(i < DATE_FORMAT);
-    	}
-    
+    		i = 0;
+    		System.out.print("Current Date: "); // print initial statement
+	    	do { // prints dates from file
+		    	if (i == 0) {	
+		    		currentMonth = Integer.parseInt(monthDateYear[i][j]) - 1; // store month
+		    		System.out.printf("%s ", monthNames[currentMonth]);
+		    		i++;
+		    	} else if (i == 1) {
+		    		currentDate = Integer.parseInt(monthDateYear[i][j]); // store date
+		    		System.out.printf("%d, ", currentDate);
+		    		i++;
+		    	} else if (i == 2) {
+		    		currentYear = Integer.parseInt(monthDateYear[i][j]);
+		    		System.out.printf("%d\n", currentYear);
+		    		i++;
+		    	}
+	    	} while(i < DATE_FORMAT); // end of current date
+	    	
+	    	if (currentDate == daysInEachMonth[currentMonth]) { // check if on final day of month
+	    		if (currentMonth == (monthNames.length - 1) ) { // check if on final month of year
+	    			currentMonth = 0;
+	    			currentYear += 1;
+	    			currentDate = 1;
+	    			System.out.printf("Subsequent Date: %s %d, %d\n\n", monthNames[currentMonth], currentDate, currentYear);
+	    		} else { // if the next month isnt january
+	    			currentMonth += 1;
+	    			currentDate = 1;
+	    			System.out.printf("Subsequent Date: %s %d, %d\n\n", monthNames[currentMonth], currentDate, currentYear);
+	    		}
+	    	} else { // if next date doens't transition to next month
+	    		currentDate += 1;
+	    		System.out.printf("Subsequent Date: %s %d, %d\n\n", monthNames[currentMonth], currentDate, currentYear);
+	    	}
+    	} // end of printing out dates 
   	}
 }
-
-    // YOU DO THIS: Use ANOTHER Loop that will display the CURRENT date in the correct format
-    // followed by the SUBSEQUENT date in the correct format, followed by a blank line.
-
-   /* Things to consider:
-   	-If it is Dec 31, subsequent date is January 1, "year + 1" 
-   	-If it is not Dec but is last day of the month, subsequent date is "next month" 1, year 
-   	-Otherwise, just increase the day
-   */
-
-
-
-   	
-   // Don't forget to close the file!	
