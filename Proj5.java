@@ -18,6 +18,8 @@ for (int i = 0; i < landArray.length; i++) {
 	}
 System.out.println();
 }
+
+System.out.print(boardDisplay(landArray));
 ///////////////TEST__OUTPUT///////////////////
 	
 	}
@@ -61,10 +63,11 @@ System.out.println();
 						sb.append("*");
 					}
 				}
-				sb.append("\n"); // be sure to insert a new line after too
-				gameOfLife = append(sb); // after scanning a row, convert to string and append to gameOfLife String
-		  }
-		
-		
+				rows.append(sb); // after scanning a row, convert to string and append to gameOfLife String
+				rows.append("\n");
+		 	}
+		 	gameOfLife = rows.toString();
+		 	return gameOfLife;
+		}	
 
 }
