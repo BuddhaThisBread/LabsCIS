@@ -14,7 +14,7 @@ public class Proj5 {
 ///////////////TEST__OUTPUT///////////////////
 System.out.print(boardDisplay(landArray));
 
-System.out.print(lookingForLife(landArray, 7, 2));
+System.out.print(lookingForLife(landArray, Integer.parseInt(args[0]), Integer.parseInt(args[1])));
 ///////////////TEST__OUTPUT///////////////////
 	
 	}
@@ -73,6 +73,85 @@ System.out.print(lookingForLife(landArray, 7, 2));
 		}
 		
 		/*
+		 	scanFirstRow - scans row above current reference cell
+		 	@int [][] landArray - obtains the 2D grid containing the 1's and 0's
+	 		@int iRef - obtains the current cells's location with respect to its row
+	 		@int jRef - obtains the current cell's location with respect to its column
+	 		@int incrementAmount - changes amount to increment jRef by
+	 		@int colStart - starts scanning at a certain column
+	 		@return int lifeForm - returns amount of neighboring cells that are alive
+		*/
+
+		public static int scanFirstRow(int[][] landArray, int iRef, int jRef, int incrementAmount, int colStart) {
+			int lifeForm = 0;
+			int colCount = colStart;
+			do { // scan first row
+				if (landArray[iRef - 1][jRef - 1] == 1) {
+					lifeForm++;
+					colCount++;
+					jRef += incrementAmount;
+				} else if (landArray[iRef - 1][jRef - 1] == 0) {
+					colCount++;
+					jRef += incrementAmount;
+				}
+			} while(colCount < 3);
+			return lifeForm;
+		}
+		
+		/*
+		 	scanSecondRow - scans current row reference cell is on
+		 	@int [][] landArray - obtains the 2D grid containing the 1's and 0's
+	 		@int iRef - obtains the current cells's location with respect to its row
+	 		@int jRef - obtains the current cell's location with respect to its column
+	 		@int incrementAmount - changes amount to increment jRef by
+	 		@int colStart - starts scanning at a certain column
+	 		@return int lifeForm - returns amount of neighboring cells that are alive
+		*/
+		
+		public static int scanCurrentRow(int[][] landArray, int iRef, int jRef, int incrementAmount, int colStart) {
+			int lifeForm = 0;
+			int colCount = colStart;
+			do { // scan current row
+				if (landArray[iRef][jRef - 1] == 1) {
+					lifeForm++;
+					colCount++;
+					jRef += incrementAmount;
+				} else if (landArray[iRef][jRef - 1] == 0) {
+					colCount++;
+					jRef += incrementAmount;
+				}
+			} while(colCount < 3);
+			return lifeForm;
+		}
+		
+		/*
+		 	scanSecondRow - scans row below reference cell
+		 	@int [][] landArray - obtains the 2D grid containing the 1's and 0's
+	 		@int iRef - obtains the current cells's location with respect to its row
+	 		@int jRef - obtains the current cell's location with respect to its column
+	 		@int incrementAmount - changes amount to increment jRef by
+	 		@int colStart - starts scanning at a certain column
+	 		@return int lifeForm - returns amount of neighboring cells that are alive
+		*/
+		
+		public static int scanFinalRow(int[][] landArray, int iRef, int jRef, int incrementAmount, int colStart) {
+			int lifeForm = 0;
+			int colCount = colStart;
+			do { // scan last row
+				if (landArray[iRef + 1][jRef - 1] == 1) {
+					lifeForm++;
+					colCount++;
+					jRef += incrementAmount;
+				} else if (landArray[iRef + 1][jRef - 1] == 0) {
+					colCount++;
+					jRef += incrementAmount;
+				}
+			} while(colCount < 3);
+			
+		return lifeForm;
+		}
+		
+		/*
 		 	lookingForLife searches the 2D grid (the array containing the grid) keeps 
 		 		a running total of living cells surrounding the current cell being looked at
 		 	@int [][] landArray - obtains the 2D grid containing the 1's and 0's
@@ -85,48 +164,125 @@ System.out.print(lookingForLife(landArray, 7, 2));
 			
 			int resetJ = jRef; // reset jRef
 			int colCount = 0; // track col were checking
-			int lifeForm = 0; // what we want to return
+			int totalLifeForm = 0; // what we want to return
 			
-			do {
-				if (landArray[iRef - 1][jRef - 1] == 1) {
-					lifeForm++;
-					colCount++;
-					jRef++; // move to next neighbor
-				} else if (landArray[iRef - 1][jRef - 1] == 0) {
-					colCount++;
-					jRef++;
-				}
-			} while(colCount < 3);
+			if (iRef - 1 < 0 && jRef - 1 < 0) { // upper left corner				
+				totalLifeForm += scanCurrentRow(landArray, iRef, jRef + 1, 2, 1); // scan first row, start at 1st col
+				totalLifeForm += scanFinalRow(landArray, iRef, jRef + 1, 1, 0);
+				
+				return totalLifeForm;
+			} // end of upper left corner 
 			
-			jRef = resetJ; // reset everything
-			colCount = 0;
+			else if (jRef - 1 < 0) { // if on left edge of board
+				totalLifeForm += scanFirstRow(landArray, iRef, jRef + 1, 1, 1);
+				totalLifeForm += scanCurrentRow(landArray, iRef, jRef + 1, 1, 1);
+				totalLifeForm += scanFinalRow(landArray, iRef, jRef + 1, 1, 1);
+				
+				return totalLifeForm;
+			} // end of left edge border case
 			
-			do {
-				if (landArray[iRef][jRef - 1] == 1) {
-					lifeForm++;
-					jRef += 2;
-					colCount++;
-				} else if (landArray[iRef][jRef - 1] == 0) {
-					jRef += 2;
-					colCount++;
-				}
-			} while(colCount < 2);
+			else if(jRef - 1 < 0 && iRef + 1 == landArray.length) { // bottom left corner
+				totalLifeForm += scanFirstRow(landArray, iRef, (jRef + 1), 1, 1);
+				totalLifeForm += scanCurrentRow(landArray, iRef, (jRef + 1), 2, 1);
+				return totalLifeForm;
+			}
 			
-			jRef = resetJ;
-			colCount = 0;
+			/*else if (iRef - 1 < 0) { // top border case
+				do { // scan current row
+					if (landArray[iRef][jRef - 1] == 1) {
+						lifeForm++;
+						jRef += 2;
+						colCount++;
+					} else if (landArray[iRef][jRef - 1] == 0) {
+						jRef += 2;
+						colCount++;
+					}
+				} while(colCount < 2);
+				
+				jRef = resetJ;
+				colCount = 0;
+				
+				do { // scan last row
+					if (landArray[iRef + 1][jRef - 1] == 1) {
+						lifeForm++;
+						colCount++;
+						jRef++;
+					} else if (landArray[iRef + 1][jRef - 1] == 0) {
+						colCount++;
+						jRef++;
+					}
+				} while(colCount < 3);
+				return lifeForm;
+			} // end of top border case
 			
-			do {
-				if (landArray[iRef + 1][jRef - 1] == 1) {
-					lifeForm++;
-					colCount++;
-					jRef++; // move to next neighbor
-				} else if (landArray[iRef + 1][jRef - 1] == 0) {
-					colCount++;
-					jRef++;
-				}
-			} while(colCount < 3);
+			else if(iRef + 1 == landArray.length) { // bottom edge case
+				do { // scan previous row
+					if (landArray[iRef - 1][jRef - 1] == 1) {
+						lifeForm++;
+						colCount++;
+						jRef++; // move to next neighbor
+					} else if (landArray[iRef - 1][jRef - 1] == 0) {
+						colCount++;
+						jRef++;
+					}
+				} while(colCount < 3);
+				
+				jRef = resetJ; // reset everything
+				colCount = 0;
+				
+				do { // scan current row
+					if (landArray[iRef][jRef - 1] == 1) {
+						lifeForm++;
+						jRef += 2;
+						colCount++;
+					} else if (landArray[iRef][jRef - 1] == 0) {
+						jRef += 2;
+						colCount++;
+					}
+				} while(colCount < 2);
+				return lifeForm;
+			} // end of bottom edge case
 			
-			return lifeForm;
+				do { // scan previous row
+					if (landArray[iRef - 1][jRef - 1] == 1) {
+						lifeForm++;
+						colCount++;
+						jRef++; // move to next neighbor
+					} else if (landArray[iRef - 1][jRef - 1] == 0) {
+						colCount++;
+						jRef++;
+					}
+				} while(colCount < 3);
+				
+				jRef = resetJ; // reset everything
+				colCount = 0;
+				
+				do { // scan current row
+					if (landArray[iRef][jRef - 1] == 1) {
+						lifeForm++;
+						jRef += 2;
+						colCount++;
+					} else if (landArray[iRef][jRef - 1] == 0) {
+						jRef += 2;
+						colCount++;
+					}
+				} while(colCount < 2);
+				
+				jRef = resetJ;
+				colCount = 0;
+				
+				do { // scan last row
+					if (landArray[iRef + 1][jRef - 1] == 1) {
+						lifeForm++;
+						colCount++;
+						jRef++;
+					} else if (landArray[iRef + 1][jRef - 1] == 0) {
+						colCount++;
+						jRef++;
+					}
+				} while(colCount < 3);*/
+				
+			return 0;
 		}
 
 }
