@@ -12,14 +12,9 @@ public class Proj5 {
 		int [][] landArray = readBoard("life1.txt");
 		
 ///////////////TEST__OUTPUT///////////////////
-for (int i = 0; i < landArray.length; i++) {
-	for (int j = 0; j < landArray[i].length; j++) {
-		System.out.print(landArray[i][j]);
-	}
-System.out.println();
-}
-
 System.out.print(boardDisplay(landArray));
+
+System.out.print(lookingForLife(landArray, 7, 2));
 ///////////////TEST__OUTPUT///////////////////
 	
 	}
@@ -52,7 +47,11 @@ System.out.print(boardDisplay(landArray));
 		return landArray;
 	}
 	
-	
+		/*
+			boardDisplay converts the 0's and 1's into periods and stars respectively
+			@int [][] landArray - accepts a 2-D array (the Array containing the grid)
+			@return String gameOfLife - returns the "board" as a grid of periods and stars
+		 */
 	
 		public static String boardDisplay(int [][] landArray) {
 		 	String gameOfLife; // contains the whole board
@@ -72,6 +71,15 @@ System.out.print(boardDisplay(landArray));
 		 	gameOfLife = rowStack.toString();
 		 	return gameOfLife;
 		}
+		
+		/*
+		 	lookingForLife searches the 2D grid (the array containing the grid) keeps 
+		 		a running total of living cells surrounding the current cell being looked at
+		 	@int [][] landArray - obtains the 2D grid containing the 1's and 0's
+		 	@iRef - obtains the current cells's location with respect to its row
+		 	@jRef - obtains the current cell's location with respect to its column
+		 	@return int lifeForm - returns amount of neighboring cells that are alive
+		*/
 		
 		public static int lookingForLife(int[][] landArray, int iRef, int jRef) {
 			
