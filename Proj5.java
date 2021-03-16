@@ -106,7 +106,7 @@ System.out.print(lookingForLife(landArray, 7, 2));
 					lifeForm++;
 					jRef += 2;
 					colCount++;
-				} else if (landArray[iRef][jRef = 1] == 0) {
+				} else if (landArray[iRef][jRef - 1] == 0) {
 					jRef += 2;
 					colCount++;
 				}
