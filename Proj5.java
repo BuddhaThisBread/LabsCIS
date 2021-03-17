@@ -9,16 +9,17 @@ public class Proj5 {
 
 	public static void main(String[] args) throws IOException{
 		Scanner scnr = new Scanner (System.in);
-		int [][] landArray = readBoard("life1.txt");
-		System.out.println(boardDisplay(landArray));
-		System.out.println(neighbors(landArray, 7, 2));
+		int [][] landArray = readBoard("life2.txt");
+
 		while (true) {
-			System.out.println(boardDisplay((update(landArray)))+ "\n");
+			System.out.print(boardDisplay(landArray));
 			try {
 				Thread.sleep(500);
 			}
 				catch (InterruptedException e) {}
-		}	
+			landArray = update(landArray);
+		}
+		
 	}
 	
 	/*
@@ -241,25 +242,25 @@ public class Proj5 {
 		*/
 		
 		public static int [][] update(int [][] landArray) {
+			int[][] updateArray = new int [landArray.length][landArray[0].length];
 			for (int i = 0; i < landArray.length; i++) {
 				for (int j = 0; j < landArray[0].length; j++) {
 					int life = neighbors(landArray, i, j);
-					if(landArray[i][j] == 1) { // if reference cell alive
-						if (life < 2 || life > 3) {
-							landArray[i][j] = 0;
-						} else {
-							continue;
-						}
-					} else if (landArray[i][j] == 0) { // if cell dead
-						if (life == 3) {
-							landArray[i][j] = 1;
-						} else {
-							continue;
-						}
+					if((landArray[i][j] == 1) && (life < 2)) { // if reference cell alive
+							updateArray[i][j] = 0;
+					}
+					else if ((landArray[i][j] == 1) && (life > 3)) {
+						updateArray[i][j] = 0;
+					}
+					else if ((landArray[i][j] == 0) && (life == 3)) { // if cell dead
+							updateArray[i][j] = 1;
+					}
+					else {
+						updateArray[i][j] = landArray[i][j];
 					}
 				} // end of inner loop
 			} // end of outer loop
-			return landArray;
+			return updateArray;
 		}
 
 }
